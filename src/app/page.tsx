@@ -1,65 +1,189 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useCallback, useMemo } from "react";
+import { GradeLetter } from "@/lib/types";
+import {
+  MECH_2022_CURRICULUM,
+  TOTAL_SEMESTERS,
+  getGradableSubjects,
+} from "@/lib/curriculum";
+import { computeGpa, computeEarnedCredits, GRADE_OPTIONS } from "@/lib/gradeUtils";
+import Header from "@/components/Header";
+import CgpaDisplay from "@/components/CgpaDisplay";
+import SemesterCard from "@/components/SemesterCard";
 
 export default function Home() {
+  const [studentName, setStudentName] = useState("");
+  const [regNo, setRegNo] = useState("");
+  const [grades, setGrades] = useState<Record<string, GradeLetter>>({});
+
+  const handleGradeChange = useCallback(
+    (code: string, grade: GradeLetter) => {
+      setGrades((prev) => ({ ...prev, [code]: grade }));
+    },
+    []
+  );
+
+  // Compute overall CGPA
+  const { cgpa, totalCredits, earnedCredits, semestersWithGrades } =
+    useMemo(() => {
+      const allGradable = MECH_2022_CURRICULUM.filter(
+        (s) => !s.excludedFromCgpa && s.credits > 0
+      );
+
+      const totalCredits = allGradable.reduce((sum, s) => sum + s.credits, 0);
+
+      const entriesWithGrades = allGradable
+        .filter((s) => grades[s.code])
+        .map((s) => ({
+          credits: s.credits,
+          grade: grades[s.code],
+        }));
+
+      const cgpa =
+        entriesWithGrades.length > 0 ? computeGpa(entriesWithGrades) : null;
+      const earnedCredits =
+        entriesWithGrades.length > 0
+          ? computeEarnedCredits(entriesWithGrades)
+          : 0;
+
+      // Count semesters that have at least one grade
+      const semestersWithGrades = new Set(
+        allGradable
+          .filter((s) => grades[s.code])
+          .map((s) => s.semester)
+      ).size;
+
+      return { cgpa, totalCredits, earnedCredits, semestersWithGrades };
+    }, [grades]);
+
+  // Fill all with a specific grade
+  const fillAll = useCallback((grade: GradeLetter) => {
+    const newGrades: Record<string, GradeLetter> = {};
+    MECH_2022_CURRICULUM.forEach((s) => {
+      if (!s.excludedFromCgpa && s.credits > 0) {
+        newGrades[s.code] = grade;
+      }
+    });
+    setGrades(newGrades);
+  }, []);
+
+  const resetAll = useCallback(() => {
+    setGrades({});
+  }, []);
+
+  // Fill semester with grade
+  const fillSemester = useCallback(
+    (semester: number, grade: GradeLetter) => {
+      const subjects = getGradableSubjects(semester);
+      setGrades((prev) => {
+        const next = { ...prev };
+        subjects.forEach((s) => {
+          next[s.code] = grade;
+        });
+        return next;
+      });
+    },
+    []
+  );
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="app-container">
+      {/* Background decorations */}
+      <div className="bg-orb bg-orb-1" />
+      <div className="bg-orb bg-orb-2" />
+      <div className="bg-orb bg-orb-3" />
+
+      <div className="content-wrapper">
+        <Header
+          studentName={studentName}
+          regNo={regNo}
+          onNameChange={setStudentName}
+          onRegNoChange={setRegNo}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+
+        {/* CGPA Hero Section */}
+        <section className="cgpa-section">
+          <CgpaDisplay
+            cgpa={cgpa}
+            totalCredits={totalCredits}
+            earnedCredits={earnedCredits}
+            semestersWithGrades={semestersWithGrades}
+            totalSemesters={TOTAL_SEMESTERS}
+          />
+        </section>
+
+        {/* Quick Actions */}
+        <section className="quick-actions">
+          <div className="quick-actions-left">
+            <span className="quick-actions-label">Quick Fill:</span>
+            {GRADE_OPTIONS.filter((g) => !["U", "SA", "W"].includes(g)).map(
+              (g) => (
+                <button
+                  key={g}
+                  className="quick-fill-btn"
+                  onClick={() => fillAll(g)}
+                  title={`Fill all subjects with grade ${g}`}
+                >
+                  {g}
+                </button>
+              )
+            )}
+          </div>
+          <button className="reset-btn" onClick={resetAll}>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <path
+                d="M2 2V6H6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2.5 10A6 6 0 1 0 3.8 4.2L2 6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Reset All
+          </button>
+        </section>
+
+        {/* Semester Cards */}
+        <section className="semesters-grid">
+          {Array.from({ length: TOTAL_SEMESTERS }, (_, i) => i + 1).map(
+            (sem) => (
+              <SemesterCard
+                key={sem}
+                semester={sem}
+                grades={grades}
+                onGradeChange={handleGradeChange}
+                defaultExpanded={sem === 1}
+              />
+            )
+          )}
+        </section>
+
+        {/* Footer */}
+        <footer className="app-footer">
+          <p>
+            B.E. Mechanical Engineering · Regulation 2022 · Anna University ·
+            ACGCET
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          <p className="footer-note">
+            Grade points and curriculum as per Anna University guidelines.
+            NCC &amp; Mandatory courses are excluded from CGPA calculation.
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
