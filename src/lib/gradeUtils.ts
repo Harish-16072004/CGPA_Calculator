@@ -88,7 +88,7 @@ export function getGradeColor(grade: GradeLetter | null): string {
  * - weighted = scaledCredits × gradePoints
  * - Only passing grades contribute credits to the denominator
  *
- * @returns GPA as a 2-decimal-place string (e.g., "8.45")
+ * @returns GPA as a 3-decimal-place string (e.g., "8.450")
  */
 export function computeGpa(
   entries: { credits: number; grade: GradeLetter }[]
@@ -106,11 +106,11 @@ export function computeGpa(
     }
   }
 
-  if (sumScaledCredits === 0) return "0.00";
+  if (sumScaledCredits === 0) return "0.000";
 
-  const raw = Math.round((sumWeighted * 100) / sumScaledCredits);
-  const gpa = raw / 100;
-  return gpa.toFixed(2);
+  const raw = Math.round((sumWeighted * 1000) / sumScaledCredits);
+  const gpa = raw / 1000;
+  return gpa.toFixed(3);
 }
 
 /**

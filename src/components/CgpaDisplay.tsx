@@ -117,7 +117,7 @@ export default function CgpaDisplay({
         <div className="cgpa-center">
           <span className="cgpa-label-top">CGPA</span>
           <span className="cgpa-number" style={{ color: cgpaColor }}>
-            {cgpa ? displayValue.toFixed(2) : "—"}
+            {cgpa ? displayValue.toFixed(3) : "—"}
           </span>
           <span className="cgpa-scale">out of 10.00</span>
         </div>
