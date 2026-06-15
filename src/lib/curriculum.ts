@@ -4,7 +4,7 @@ import { SubjectDefinition } from "./types";
  * Complete curriculum for B.E. Mechanical Engineering
  * Regulation 2022, ACGCET
  *
- * 58 subjects across 8 semesters.
+ * 61 subjects across 8 semesters.
  * NCC and mandatory (MC) courses are marked excludedFromCgpa.
  */
 export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
@@ -38,7 +38,7 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   { code: "22HSL29", title: "Communication Laboratory / Foreign Language", category: "EEC", credits: 1.5, semester: 2 },
 
   // ──────────────────────────────────────────────────────
-  // SEMESTER III (9 credited)
+  // SEMESTER III (10 credited)
   // ──────────────────────────────────────────────────────
   { code: "22MAB31", title: "Transforms and Partial Differential Equations", category: "BSC", credits: 4, semester: 3 },
   { code: "22MEG32", title: "Engineering Mechanics", category: "ESC", credits: 3, semester: 3 },
@@ -48,10 +48,11 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   { code: "22MEC36", title: "Manufacturing Processes", category: "PCC", credits: 3, semester: 3 },
   { code: "22MEL37", title: "Computer Aided Machine Drawing", category: "ESC", credits: 2, semester: 3 },
   { code: "22MEL38", title: "Manufacturing Technology Laboratory", category: "PCC", credits: 2, semester: 3 },
+  { code: "22NM001", title: "Naan Mudhalvan", category: "EEC", credits: 2, semester: 3 },
   { code: "22MEZ39", title: "Professional Development", category: "EEC", credits: 1, semester: 3 },
 
   // ──────────────────────────────────────────────────────
-  // SEMESTER IV (9 credited + NCC excluded)
+  // SEMESTER IV (10 credited + NCC excluded)
   // ──────────────────────────────────────────────────────
   { code: "22MEC41", title: "Theory of Machines", category: "PCC", credits: 4, semester: 4 },
   { code: "22MEC42", title: "Thermal Engineering", category: "PCC", credits: 4, semester: 4 },
@@ -62,9 +63,10 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   { code: "22NCC02", title: "NCC Credit Course Level 2", category: "NCC", credits: 3, semester: 4, isNccCourse: true, excludedFromCgpa: true },
   { code: "22MEL47", title: "Strength of Materials and Fluid Machinery Laboratory", category: "PCC", credits: 2, semester: 4 },
   { code: "22MEL48", title: "Thermal Engineering Laboratory", category: "PCC", credits: 2, semester: 4 },
+  { code: "22NM002", title: "Naan Mudhalvan", category: "EEC", credits: 2, semester: 4 },
 
   // ──────────────────────────────────────────────────────
-  // SEMESTER V (9 credited + MC excluded)
+  // SEMESTER V (10 credited + MC excluded)
   // ──────────────────────────────────────────────────────
   { code: "22MEC51", title: "Design of Machine Elements", category: "PCC", credits: 4, semester: 5 },
   { code: "22MEC52", title: "Metrology and Measurements", category: "PCC", credits: 3, semester: 5 },
@@ -72,12 +74,13 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   { code: "22MEV52", title: "Professional Elective II", category: "PEC", credits: 3, semester: 5 },
   { code: "22MEV53", title: "Professional Elective III", category: "PEC", credits: 3, semester: 5 },
   { code: "22UGM51", title: "Mandatory Course – I", category: "MC", credits: 0, semester: 5, excludedFromCgpa: true },
+  { code: "22NM003", title: "Naan Mudhalvan", category: "EEC", credits: 2, semester: 5 },
   { code: "22MEZ53", title: "Summer Internship– I", category: "EEC", credits: 1, semester: 5 },
   { code: "22MEL54", title: "Theory of Machines Laboratory", category: "PCC", credits: 2, semester: 5 },
   { code: "22MEL55", title: "Metallurgy and Metrology Laboratory", category: "PCC", credits: 2, semester: 5 },
 
   // ──────────────────────────────────────────────────────
-  // SEMESTER VI (10 credited + MC & NCC excluded)
+  // SEMESTER VI (11 credited + MC & NCC excluded)
   // ──────────────────────────────────────────────────────
   { code: "22MEC61", title: "Heat and Mass Transfer", category: "PCC", credits: 4, semester: 6 },
   { code: "22MEV61", title: "Professional Elective IV", category: "PEC", credits: 3, semester: 6 },
@@ -87,19 +90,19 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   { code: "22OEX61", title: "Open Elective – I", category: "OEC", credits: 3, semester: 6 },
   { code: "22UGM61", title: "Mandatory Course – II", category: "MC", credits: 0, semester: 6, excludedFromCgpa: true },
   { code: "22NCC03", title: "NCC Credit Course Level 3", category: "NCC", credits: 3, semester: 6, isNccCourse: true, excludedFromCgpa: true },
+  { code: "22NM004", title: "Naan Mudhalvan", category: "EEC", credits: 2, semester: 6 },
   { code: "22MEL62", title: "CAD/CAM/CAE Laboratory", category: "PCC", credits: 2, semester: 6 },
   { code: "22MEL63", title: "Heat Transfer Laboratory", category: "PCC", credits: 2, semester: 6 },
 
   // ──────────────────────────────────────────────────────
-  // SEMESTER VII (10 credited)
+  // SEMESTER VII (9 credited)
   // ──────────────────────────────────────────────────────
   { code: "22HSM71", title: "Human values and Ethics", category: "HSMC", credits: 2, semester: 7 },
   { code: "22MEH72", title: "Industrial Management", category: "HSMC", credits: 3, semester: 7 },
   { code: "22MEC73", title: "Mechatronics and IoT", category: "PCC", credits: 3, semester: 7 },
   { code: "22MEC74", title: "Computer Integrated Manufacturing", category: "PCC", credits: 3, semester: 7 },
   { code: "22OEX72", title: "Open Elective – II", category: "OEC", credits: 3, semester: 7 },
-  { code: "22OEX73", title: "Open Elective – III", category: "OEC", credits: 3, semester: 7 },
-  { code: "22OEX74", title: "Open Elective – IV", category: "OEC", credits: 3, semester: 7 },
+  { code: "22NM005", title: "Naan Mudhalvan", category: "EEC", credits: 2, semester: 7 },
   { code: "22MEL75", title: "Mechatronics & Automation Laboratory", category: "PCC", credits: 2, semester: 7 },
   { code: "22MEZ76", title: "Summer Internship– II", category: "EEC", credits: 1, semester: 7 },
 
