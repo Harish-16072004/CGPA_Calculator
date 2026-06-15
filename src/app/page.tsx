@@ -15,7 +15,17 @@ import SemesterCard from "@/components/SemesterCard";
 export default function Home() {
   const [studentName, setStudentName] = useState("");
   const [regNo, setRegNo] = useState("");
-  const [grades, setGrades] = useState<Record<string, GradeLetter>>({});
+  
+  // Initialize grades with default grades from curriculum
+  const [grades, setGrades] = useState<Record<string, GradeLetter>>(() => {
+    const initialGrades: Record<string, GradeLetter> = {};
+    MECH_2022_CURRICULUM.forEach((s) => {
+      if (s.defaultGrade) {
+        initialGrades[s.code] = s.defaultGrade;
+      }
+    });
+    return initialGrades;
+  });
 
   const handleGradeChange = useCallback(
     (code: string, grade: GradeLetter) => {

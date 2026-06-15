@@ -30,6 +30,7 @@ export interface SubjectDefinition {
   isSkillBased?: boolean;
   isNccCourse?: boolean;
   excludedFromCgpa?: boolean;
+  defaultGrade?: GradeLetter;
 }
 
 export interface SubjectGradeEntry {

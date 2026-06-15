@@ -11,7 +11,7 @@ export const MECH_2022_CURRICULUM: SubjectDefinition[] = [
   // ──────────────────────────────────────────────────────
   // SEMESTER I (11 rows, 10 credited + 1 excluded)
   // ──────────────────────────────────────────────────────
-  { code: "22IPM01", title: "Induction Programme", category: "OTHER", credits: 0, semester: 1, excludedFromCgpa: true },
+  { code: "22IPM01", title: "Induction Programme", category: "OTHER", credits: 10, semester: 1, defaultGrade: "O" },
   { code: "22HSE11", title: "Professional English-I", category: "HSMC", credits: 3, semester: 1 },
   { code: "22MAB12", title: "Matrices and Calculus", category: "BSC", credits: 4, semester: 1 },
   { code: "22PHB14", title: "Engineering Physics", category: "BSC", credits: 3, semester: 1 },
